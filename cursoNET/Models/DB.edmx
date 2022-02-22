@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="cursoNetModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="citiesTable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="statesTable">
+          <Key>
+            <PropertyRef Name="idStates" />
+          </Key>
+          <Property Name="idStates" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="states" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="userTable">
+          <Key>
+            <PropertyRef Name="idUser" />
+          </Key>
+          <Property Name="idUser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userEmail" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="userPassword" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="fkState" Type="int" Nullable="false" />
+          <Property Name="userAge" Type="int" />
+        </EntityType>
+        <Association Name="FK_userTable_statesTable">
+          <End Role="statesTable" Type="Self.statesTable" Multiplicity="1" />
+          <End Role="userTable" Type="Self.userTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="statesTable">
+              <PropertyRef Name="idStates" />
+            </Principal>
+            <Dependent Role="userTable">
+              <PropertyRef Name="fkState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="cursoNetModelStoreContainer">
+          <EntitySet Name="citiesTable" EntityType="Self.citiesTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="statesTable" EntityType="Self.statesTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="userTable" EntityType="Self.userTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_userTable_statesTable" Association="Self.FK_userTable_statesTable">
+            <End Role="statesTable" EntitySet="statesTable" />
+            <End Role="userTable" EntitySet="userTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="cursoNetModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="cursoNetEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="statesTables" EntityType="cursoNetModel.statesTable" />
+          <EntitySet Name="userTables" EntityType="cursoNetModel.userTable" />
+          <AssociationSet Name="FK_userTable_statesTable" Association="cursoNetModel.FK_userTable_statesTable">
+            <End Role="statesTable" EntitySet="statesTables" />
+            <End Role="userTable" EntitySet="userTables" />
+          </AssociationSet>
+          <EntitySet Name="citiesTables" EntityType="cursoNetModel.citiesTable" />
+        </EntityContainer>
+        <EntityType Name="statesTable">
+          <Key>
+            <PropertyRef Name="idStates" />
+          </Key>
+          <Property Name="idStates" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="states" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="userTables" Relationship="cursoNetModel.FK_userTable_statesTable" FromRole="statesTable" ToRole="userTable" />
+        </EntityType>
+        <EntityType Name="userTable">
+          <Key>
+            <PropertyRef Name="idUser" />
+          </Key>
+          <Property Name="idUser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userEmail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="userPassword" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="fkState" Type="Int32" Nullable="false" />
+          <Property Name="userAge" Type="Int32" />
+          <NavigationProperty Name="statesTable" Relationship="cursoNetModel.FK_userTable_statesTable" FromRole="userTable" ToRole="statesTable" />
+        </EntityType>
+        <Association Name="FK_userTable_statesTable">
+          <End Type="cursoNetModel.statesTable" Role="statesTable" Multiplicity="1" />
+          <End Type="cursoNetModel.userTable" Role="userTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="statesTable">
+              <PropertyRef Name="idStates" />
+            </Principal>
+            <Dependent Role="userTable">
+              <PropertyRef Name="fkState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="citiesTable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="city" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="cursoNetModelStoreContainer" CdmEntityContainer="cursoNetEntities">
+          <EntitySetMapping Name="statesTables">
+            <EntityTypeMapping TypeName="cursoNetModel.statesTable">
+              <MappingFragment StoreEntitySet="statesTable">
+                <ScalarProperty Name="states" ColumnName="states" />
+                <ScalarProperty Name="idStates" ColumnName="idStates" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userTables">
+            <EntityTypeMapping TypeName="cursoNetModel.userTable">
+              <MappingFragment StoreEntitySet="userTable">
+                <ScalarProperty Name="userAge" ColumnName="userAge" />
+                <ScalarProperty Name="fkState" ColumnName="fkState" />
+                <ScalarProperty Name="userPassword" ColumnName="userPassword" />
+                <ScalarProperty Name="userEmail" ColumnName="userEmail" />
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="citiesTables">
+            <EntityTypeMapping TypeName="cursoNetModel.citiesTable">
+              <MappingFragment StoreEntitySet="citiesTable">
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

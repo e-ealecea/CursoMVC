@@ -1,0 +1,49 @@
+﻿@model cursoNET.Models.ViewModel.GetfileViewModel
+@{
+    ViewBag.Title = "Sube tu archivo";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<!-- ES LO MISMO: <form method="post" enctype="multipart/form-data"> </form>, PERO SE ESTA USANDO EL HTML HELPER-->
+
+
+@using (Html.BeginForm("Send", "Getfile", FormMethod.Post, new { enctype="multipart/form-data" }))
+{
+    //@Html.AntiForgeryToken(); //Solo se pueden hacer solicitudes desde mi red
+
+    <div class="row">
+        <div class="col-md-6 col-lg-offset-3">
+            <div class="form-group">
+                @Html.LabelFor(d => d.PostedFile)
+                @Html.TextBoxFor(d => d.PostedFile, new { type = "file", accept = ".png" , @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.PostedFile, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(d => d.PostedFile2)
+                @Html.TextBoxFor(d => d.PostedFile2, new { @class="form-control", type = "file" ,accept=".png"})
+                @Html.ValidationMessageFor(d => d.PostedFile2, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(d => d.FName)
+                @Html.TextBoxFor(d => d.FName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(d => d.FName, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group text-center">
+                <input type="submit" class="btn btn-success" value="Enviar archivo" />
+
+            </div>
+        </div>
+    </div>
+}
+
+@if(ViewBag.Message != null)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Message
+
+    </div>
+
+}
+

@@ -1,0 +1,66 @@
+﻿<!--Aquí se mostrará la informacion y esta se manda a llamar a los modelos así:  TRAERÁ UNA LISTA DE TIPO MODELO
+    Va ir a la table view model donde traerá la informacion-->
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Usuarios</h2>
+
+<div class="row">
+    <div class="col-1g-12">
+        <table class="table table-bordered">
+            <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>Edad</th>
+                <th>Acciones</th>
+            </tr>
+
+            @foreach (var row in Model.Users)
+            {
+                <tr>        
+                    <td>@row.Id</td>
+                    <td>@row.Email</td>
+                    <td>@row.Edad</td>
+                    <td>
+                        <input onclick="document.location.href = '@Url.Content("~/User/Edit/" + row.Id)'" type="button" class="btn btn-default" value="Editar" />
+                        <input onclick="jsDelete(@row.Id)" type="button" class="btn btn-danger" value="Eliminar" />
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-nd-12">
+        <input type="button" class="btn btn-primary" onclick="document.location.href = '@Url.Content("~/User/Add")'" value="Añadir usuario" />
+    </div>
+</div>
+<br>
+
+<div class="row form-group">
+    <h3>Ciudades</h3>
+    <!--El primer parametro es el name y el otro es lo que contendrá. Se tiene que hacer un cast porque estamos usando modelos dinamicos, solo acepta IEnumerable<SelectListItem>-->
+    @Html.DropDownList("CityNames", (IEnumerable<SelectListItem>)Model.ListItemsCity, new { @class = "form-control" })
+</div>
+
+<script>
+    function jsDelete(id) {
+        if (confirm("Estas segurisisisisisisisisimo de eliminarlo?")) {
+            url ='@Url.Content("~/User/Delete/")'+ id;
+
+            $.post(url, function (data) {
+                if (data == "1") {
+                    document.location.href = '@Url.Content("~/User/")';
+                } else {
+                    alert("Ocurrio un error :(")
+                }
+
+            })
+        }
+    }
+</script>

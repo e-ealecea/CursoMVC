@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml"; // Va a cargar el layout de Login si no hay este atributo se pone el layout de default (o sea el de la carpeta shared)
+}
+<div class="row">
+    <form id="login">
+        <div class="col-1g-6 col-lg-offset-3">
+            Usuario
+            <input type="text" name="user" />
+            Pasword
+            <input type="password" name="pass" />
+            <input type="submit" class="btn btn-success" value="Entrar" />
+        </div>
+    </form>
+</div>
+
+
+@section scripts
+{
+
+    <script>
+    $(document).ready(function () {
+        $("#login").submit(function (e) {
+            e.preventDefault();
+
+            url = "@Url.Content("~/Access/Enter")"; //url que va a resolver el arroba ponemos codigo de back que andamos usando en este caso c#
+            parametros = $(this).serialize(); //pasarlos a string
+
+            $.post(url, parametros, function (data) {
+                if (data == 1) {
+                    document.location.href = "@Url.Content("~/")";
+                } else {
+                    alert(data)
+                }
+            })
+
+        })
+
+
+    })
+
+    </script>
+}
